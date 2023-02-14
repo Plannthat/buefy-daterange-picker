@@ -183,19 +183,19 @@
 </template>
 
 <script>
-import dateUtilMixin from "./dateUtilMixin";
-import Calendar from "./Calendar.vue";
-import CalendarTime from "./CalendarTime";
-import CalendarRanges from "./CalendarRanges";
-import { getDateUtil } from "./util";
+import dateUtilMixin from './dateUtilMixin';
+import Calendar from './Calendar.vue';
+import CalendarTime from './CalendarTime';
+import CalendarRanges from './CalendarRanges';
+import { getDateUtil } from './util';
 
 export default {
   inheritAttrs: false,
   components: { Calendar, CalendarTime, CalendarRanges },
   mixins: [dateUtilMixin],
   model: {
-    prop: "dateRange",
-    event: "update",
+    prop: 'dateRange',
+    event: 'update',
   },
   props: {
     /**
@@ -314,12 +314,12 @@ export default {
       type: [Object, Boolean],
       default() {
         let localeRanges = this.localeData.localeRanges || {
-          today: "Today",
-          yesterday: "Yesterday",
-          last1Week: "Last 1 week",
-          thisMonth: "This month",
-          lastMonth: "Last month",
-          thisYear: "This year",
+          today: 'Today',
+          yesterday: 'Yesterday',
+          last1Week: 'Last 1 week',
+          thisMonth: 'This month',
+          lastMonth: 'Last month',
+          thisYear: 'This year',
         };
         let today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -375,7 +375,7 @@ export default {
      */
     opens: {
       type: String,
-      default: "center",
+      default: 'center',
     },
     /**
        function(classes, date) - special prop type function which accepts 2 params:
@@ -399,7 +399,7 @@ export default {
      */
     dateUtil: {
       type: [Object, String],
-      default: "moment",
+      default: 'moment',
     },
     /**
      * Disabled state. If true picker do not popup on click.
@@ -413,7 +413,7 @@ export default {
      */
     controlContainerClass: {
       type: [Object, String],
-      default: "form-control reportrange-text",
+      default: 'form-control reportrange-text',
     },
   },
   data() {
@@ -424,7 +424,9 @@ export default {
     let startDate = this.dateRange.startDate || null;
     let endDate = this.dateRange.endDate || null;
 
-    data.monthDate = startDate ? new Date(startDate) : new Date();
+    data.monthDate = startDate
+      ? util.prevMonth(new Date(startDate))
+      : util.prevMonth(new Date());
     //get next month date
     data.nextMonthDate = util.nextMonth(data.monthDate);
 
@@ -459,7 +461,7 @@ export default {
       let end = new Date(this.end);
       end.setHours(0, 0, 0, 0);
 
-      classes["in-range"] = dt >= start && dt <= end;
+      classes['in-range'] = dt >= start && dt <= end;
 
       return this.dateFormat ? this.dateFormat(classes, date) : classes;
     },
@@ -494,7 +496,7 @@ export default {
        * @param {monthDate} date displayed (first day of the month)
        * @param calendarIndex int 0 - first(left) calendar, 1 - second(right) calendar
        */
-      this.$emit("change-month", this.monthDate, 0);
+      this.$emit('change-month', this.monthDate, 0);
     },
     changeRightMonth(value) {
       let newDate = new Date(value.year, value.month - 1, 1);
@@ -520,7 +522,7 @@ export default {
           );
         }
       }
-      this.$emit("change-month", this.monthDate, 1);
+      this.$emit('change-month', this.monthDate, 1);
     },
     normalizeDatetime(value, oldValue) {
       let newDate = new Date(value);
@@ -564,7 +566,7 @@ export default {
        * Emits event when the mouse hovers a date
        * @param {Date} value the date that is being hovered
        */
-      this.$emit("hoverDate", value);
+      this.$emit('hoverDate', value);
     },
     onClickPicker() {
       if (!this.disabled) {
@@ -572,7 +574,7 @@ export default {
       }
     },
     togglePicker(value, event) {
-      if (typeof value === "boolean") {
+      if (typeof value === 'boolean') {
         this.open = value;
       } else {
         this.open = !this.open;
@@ -584,7 +586,7 @@ export default {
          * @param {boolean} open - the current state of the picker
          * @param {Function} togglePicker - function (show, event) which can be used to control the picker. where "show" is the new state and "event" is boolean indicating whether a new event should be raised
          */
-        this.$emit("toggle", this.open, this.togglePicker);
+        this.$emit('toggle', this.open, this.togglePicker);
     },
     clickedApply() {
       // this.open = false
@@ -593,14 +595,14 @@ export default {
        * Emits when the user selects a range from the picker and clicks "apply" (if autoApply is true).
        * @param {json} value - json object containing the dates: {startDate, endDate}
        */
-      this.$emit("update", { startDate: this.start, endDate: this.end });
+      this.$emit('update', { startDate: this.start, endDate: this.end });
     },
     onSelect() {
       /**
        * Emits when the user selects a range from the picker.
        * @param {json} value - json object containing the dates: {startDate, endDate}
        */
-      this.$emit("select", { startDate: this.start, endDate: this.end });
+      this.$emit('select', { startDate: this.start, endDate: this.end });
     },
     clickAway() {
       if (this.open) {
@@ -673,16 +675,16 @@ export default {
       return this.alwaysShowCalendars || this.showCustomRangeCalendars;
     },
     startText() {
-      if (this.start === null) return "";
+      if (this.start === null) return '';
 
       return this.$dateUtil.format(this.start, this.locale.format);
     },
     endText() {
-      if (this.end === null) return "";
+      if (this.end === null) return '';
       return this.$dateUtil.format(this.end, this.locale.format);
     },
     rangeText() {
-      return "";
+      return '';
       // TODO: Fix later
       let range = this.startText;
       if (!this.singleDatePicker) {
@@ -698,15 +700,15 @@ export default {
     },
     pickerStyles() {
       return {
-        "show-calendar": this.open,
-        "show-ranges": !!this.ranges,
-        "show-weeknumbers": this.showWeekNumbers,
+        'show-calendar': this.open,
+        'show-ranges': !!this.ranges,
+        'show-weeknumbers': this.showWeekNumbers,
         single: this.singleDatePicker,
-        opensright: this.opens === "right",
-        opensleft: this.opens === "left",
-        openscenter: this.opens === "center",
+        opensright: this.opens === 'right',
+        opensleft: this.opens === 'left',
+        openscenter: this.opens === 'center',
         linked: this.linkedCalendars,
-        "hide-calendars": !this.showCalendars,
+        'hide-calendars': !this.showCalendars,
       };
     },
     isClear() {
@@ -736,7 +738,7 @@ export default {
         month: dt.getMonth() + 1,
       });
     },
-    "dateRange.startDate"(value) {
+    'dateRange.startDate'(value) {
       if (!this.$dateUtil.isValidDate(new Date(value))) return;
 
       this.start =
@@ -751,7 +753,7 @@ export default {
         this.end = new Date(this.dateRange.endDate);
       }
     },
-    "dateRange.endDate"(value) {
+    'dateRange.endDate'(value) {
       if (!this.$dateUtil.isValidDate(new Date(value))) return;
 
       this.end = !!value && !this.isClear ? new Date(value) : null;
@@ -765,20 +767,20 @@ export default {
     },
     open: {
       handler(value) {
-        if (typeof document === "object")
+        if (typeof document === 'object')
           this.$nextTick(() => {
             value
-              ? document.body.addEventListener("click", this.clickAway)
-              : document.body.removeEventListener("click", this.clickAway);
+              ? document.body.addEventListener('click', this.clickAway)
+              : document.body.removeEventListener('click', this.clickAway);
             if (!this.alwaysShowCalendars && this.ranges) {
               this.showCustomRangeCalendars = !Object.keys(this.ranges).find(
                 (key) =>
                   this.$dateUtil.isSame(
                     this.start,
                     this.ranges[key][0],
-                    "date"
+                    'date'
                   ) &&
-                  this.$dateUtil.isSame(this.end, this.ranges[key][1], "date")
+                  this.$dateUtil.isSame(this.end, this.ranges[key][1], 'date')
               );
             }
           });
@@ -790,7 +792,7 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../assets/daterangepicker.scss";
+@import '../assets/daterangepicker.scss';
 </style>
 
 <style lang="scss">

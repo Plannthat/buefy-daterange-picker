@@ -13,7 +13,15 @@
           <div class="row mx-1">
             <span class="select">
               <select v-model="month" class="monthselect col">
-                <option v-for="m in months" :key="m.value" :value="m.value + 1">
+                <option
+                  v-for="m in months"
+                  :key="m.value"
+                  :value="m.value + 1"
+                  :disabled="
+                    new Date().getMonth() < m.value &&
+                    year === new Date().getFullYear()
+                  "
+                >
                   {{ m.label }}
                 </option>
               </select>
@@ -21,6 +29,7 @@
             <input
               ref="yearSelect"
               type="number"
+              :max="new Date().getFullYear()"
               v-model="year"
               @blur="checkYear"
               class="yearselect col input"
@@ -62,11 +71,11 @@
 </template>
 
 <script>
-import dateUtilMixin from "./dateUtilMixin";
+import dateUtilMixin from './dateUtilMixin';
 
 export default {
   mixins: [dateUtilMixin],
-  name: "calendar",
+  name: 'calendar',
   props: {
     monthDate: Date,
     localeData: Object,
@@ -113,7 +122,7 @@ export default {
         emit &&
         year_month !== this.$dateUtil.yearMonth(this.currentMonthDate)
       ) {
-        this.$emit("change-month", {
+        this.$emit('change-month', {
           month: this.currentMonthDate.getMonth() + 1,
           year: this.currentMonthDate.getFullYear(),
         });
@@ -136,9 +145,9 @@ export default {
           dt.setHours(0, 0, 0, 0) ==
             new Date(this.start).setHours(0, 0, 0, 0) ||
           dt.setHours(0, 0, 0, 0) == new Date(this.end).setHours(0, 0, 0, 0),
-        "in-range": dt >= start && dt <= end,
-        "start-date": dt.getTime() === start.getTime(),
-        "end-date": dt.getTime() === end.getTime(),
+        'in-range': dt >= start && dt <= end,
+        'start-date': dt.getTime() === start.getTime(),
+        'end-date': dt.getTime() === end.getTime(),
         disabled:
           (this.minDate && dt.getTime() < this.minDate.getTime()) ||
           (this.maxDate && dt.getTime() > this.maxDate.getTime()),
@@ -170,7 +179,7 @@ export default {
           this.maxDate
         );
         if (this.$dateUtil.isValidDate(newDate)) {
-          this.$emit("change-month", {
+          this.$emit('change-month', {
             month: newDate.getMonth(),
             year: newDate.getFullYear(),
           });
@@ -188,7 +197,7 @@ export default {
           this.maxDate
         );
 
-        this.$emit("change-month", {
+        this.$emit('change-month', {
           month: newDate.getMonth() + 1,
           year: newDate.getFullYear(),
         });
@@ -299,7 +308,7 @@ td.disabled {
   opacity: 0.6;
 }
 
-@function str-replace($string, $search, $replace: "") {
+@function str-replace($string, $search, $replace: '') {
   $index: str-index($string, $search);
 
   @if $index {
@@ -315,16 +324,16 @@ td.disabled {
 }
 
 $carousel-control-color: #ccc !default;
-$viewbox: "-2 -2 10 10";
+$viewbox: '-2 -2 10 10';
 $carousel-control-prev-icon-bg: str-replace(
   url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='#{$viewbox}'%3E%3Cpath d='M5.25 0l-4 4 4 4 1.5-1.5-2.5-2.5 2.5-2.5-1.5-1.5z'/%3E%3C/svg%3E"),
-  "#",
-  "%23"
+  '#',
+  '%23'
 ) !default;
 $carousel-control-next-icon-bg: str-replace(
   url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='#{$viewbox}'%3E%3Cpath d='M2.75 0l-1.5 1.5 2.5 2.5-2.5 2.5 1.5 1.5 4-4-4-4z'/%3E%3C/svg%3E"),
-  "#",
-  "%23"
+  '#',
+  '%23'
 ) !default;
 
 .fa {
