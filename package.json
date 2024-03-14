@@ -1,6 +1,6 @@
 {
   "name": "buefy-daterange-picker",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "description": "Buefy date range picker based on Buefy Vuejs",
   "author": "Binh Ho <binh@sango-tech.com>",
   "main": "dist/buefy-daterange-picker.umd.min.js",
@@ -59,6 +59,20 @@
     "vue-template-compiler": "^2.6.10",
     "vuepress": "^1.2",
     "webpack": "^4.41.2"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
   },
   "browserslist": [
     "> 1%",

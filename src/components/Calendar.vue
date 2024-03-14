@@ -7,7 +7,7 @@
         </th>
         <th
           v-if="showDropdowns"
-          :colspan="showWeekNumbers ? 6 : 5"
+          :colspan="showWeekNumbers ? 8 : 7"
           class="month"
         >
           <div class="row mx-1">
